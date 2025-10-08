@@ -2,8 +2,10 @@ import cv2
 import requests
 import time
 import json
+import arduino
 
 brick_counter = 0
+current_position = 1
 
 #default catagorisation setting
 #name is input, checks part name then returns category
@@ -141,13 +143,21 @@ if no item found:
 
 #Sort piece - needs to send command to stepper motor
 def sort_piece(category_number):
-    # Implement your sorting logic here
-    # For example, control motors or actuators to direct the piece to the correct bin
-    pass
+    global current_position
+    #makes sure category is a valid category - later turn this into layer checking.
+    if category_number > 12:
+        print("Invalid Category")
+        return;
+    movement = category_number-current_position
+    #handles negative number - turns it into a positive
+    if movement < 0:
+       movement = movement+12;
+    arduino.send_command(movement);
 
 
 def main():
     global brick_counter
+    global current_position
     cap = cv2.VideoCapture(0)
 
     if not cap.isOpened():
@@ -164,6 +174,7 @@ def main():
         brick_counter += 1
         if category_number is not None:
             sort_piece(category_number) 
+            current_position = category_number
         else:
             print("Could not sort")
 
