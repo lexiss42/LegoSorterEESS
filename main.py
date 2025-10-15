@@ -6,6 +6,7 @@ import arduino
 
 brick_counter = 0
 current_position = 1
+conveyer_state = "off"
 
 #default catagorisation setting
 #name is input, checks part name then returns category
@@ -162,10 +163,12 @@ def main():
         return
 
     run = True
+    start_conveyer();
     while run:  # allows more control over breaking the loop than `while True:`
         image = capture_image(cap)
         if image is None:
             run = False
+            stop_conveyer();
             break
         category_number = recognize_lego_piece(image)
         brick_counter += 1
@@ -175,6 +178,17 @@ def main():
         else:
             print("Could not sort")
 
+def start_conveyer():
+    global conveyer_state
+    conveyer_state = "on";
+    arduino.send_command("start");
+
+
+def stop_conveyer():
+    global conveyer_state
+    conveyer_state = "off";
+    arduino.send_command("stop");
+    
 
 if __name__ == '__main__':
     main()

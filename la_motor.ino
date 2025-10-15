@@ -7,10 +7,18 @@ const int division = 200/12; // Partitioned into 12 "slices"
 // Initialize the stepper library on pins x:
 Stepper myStepper = Stepper(stepsPerRevolution, 13, 12, 11, 10);
 
+//conveyer motor code
+const int relay_1 = 22;
+
+
 void setup() {
   // Set the motor speed (RPMs):
   myStepper.setSpeed(100);
   Serial.begin(9600);
+
+  //conveyer motor
+  pinMode(relay_1, OUTPUT);
+  stop_conveyer();
 }
 
 
@@ -28,19 +36,37 @@ void loop()
   {
     String command = Serial.readStringUntil('\n'); // read until newline
     command.trim();
-    int num = Serial.parseInt();
-    // Serial.parseInt() ignores non numbers
-    if (num != 0)
-    {    
-      move(num);
-    }
-    
+    //Handles number commands
+    if (isDigit(command.charAt(1))) 
+    {
+        int num = Serial.parseInt();   
+        if (num != 0) 
+        {
+            move(num);                
+        }
+    } else //Handles string command
+    {
+        if(command == "start"){
+            start_conveyer();
+        } 
+        if(command == "stop"){
+            stop_conveyer();
+        }
+    }  
   }
 }
 
-void move(int steps) 
+void move(int command) 
 {
-  myStepper.step(steps * division);
+  myStepper.step(command * division);
+}
+
+void start_conveyer(){
+    digitalWrite(relay_1, HIGH);
+}
+
+void stop_conveyer(){
+    digitalWrite(relay_1, LOW);
 }
 
 
