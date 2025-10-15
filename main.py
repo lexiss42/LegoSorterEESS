@@ -149,9 +149,6 @@ def sort_piece(category_number):
         print("Invalid Category")
         return;
     movement = category_number-current_position
-    #handles negative number - turns it into a positive
-    if movement < 0:
-       movement = movement+12;
     arduino.send_command(movement);
 
 
