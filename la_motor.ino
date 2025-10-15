@@ -8,9 +8,8 @@ const int division = 200/12; // Partitioned into 12 "slices"
 Stepper myStepper = Stepper(stepsPerRevolution, 13, 12, 11, 10);
 
 //chatgpt conveyer motor code
-const int ENA = 9;
-const int IN1 = 8;
-const int IN2 = 7;
+const int relay_1 = 22;
+
 
 void setup() {
   // Set the motor speed (RPMs):
@@ -18,9 +17,7 @@ void setup() {
   Serial.begin(9600);
 
   //chatgpt conveyer motor
-  pinMode(ENA, OUTPUT);
-  pinMode(IN1, OUTPUT);
-  pinMode(IN2, OUTPUT);
+  pinMode(relay_1, OUTPUT);
   stop_conveyer();
 }
 
@@ -65,15 +62,11 @@ void move(int command)
 }
 
 void start_conveyer(){
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, LOW);
-    digitalWrite(ENA, 100);
+    digitalWrite(relay_1, HIGH);
 }
 
 void stop_conveyer(){
-    digitalWrite(IN1, LOW);
-    digitalWrite(IN2, LOW);
-    digitalWrite(ENA, 0);
+    digitalWrite(relay_1, LOW);
 }
 
 
