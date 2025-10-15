@@ -7,7 +7,7 @@ const int division = 200/12; // Partitioned into 12 "slices"
 // Initialize the stepper library on pins x:
 Stepper myStepper = Stepper(stepsPerRevolution, 13, 12, 11, 10);
 
-//chatgpt conveyer motor code
+//conveyer motor code
 const int relay_1 = 22;
 
 
@@ -16,7 +16,7 @@ void setup() {
   myStepper.setSpeed(100);
   Serial.begin(9600);
 
-  //chatgpt conveyer motor
+  //conveyer motor
   pinMode(relay_1, OUTPUT);
   stop_conveyer();
 }
