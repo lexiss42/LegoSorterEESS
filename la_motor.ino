@@ -28,19 +28,37 @@ void loop()
   {
     String command = Serial.readStringUntil('\n'); // read until newline
     command.trim();
-    int num = Serial.parseInt();
-    // Serial.parseInt() ignores non numbers
-    if (num != 0)
-    {    
-      move(num);
-    }
-    
+    //Handles number commands
+    if (isDigit(command.charAt(1))) 
+    {
+        int num = Serial.parseInt();   
+        if (num != 0) 
+        {
+            move(num);                
+        }
+    } else //Handles string command
+    {
+        if(command == "start"){
+            start_conveyer();
+        } 
+        if(command == "stop"){
+            stop_conveyer();
+        }
+    }  
   }
 }
 
-void move(int steps) 
+void move(int command) 
 {
-  myStepper.step(steps * division);
+  myStepper.step(command * division);
+}
+
+void start_conveyer(){
+    pass
+}
+
+void stop_conveyer(){
+    pass
 }
 
 
